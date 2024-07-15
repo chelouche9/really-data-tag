@@ -59,7 +59,17 @@ if num < len(df):
         st.divider()
     
     # Button to go to the next claim
-    st.button('Next', on_click=increment_claim)
+    # st.button('Next', on_click=increment_claim)
+    if st.button('Next', on_click=increment_claim):
+        st.experimental_rerun()
+        
+        # JavaScript to scroll to top after button click
+        scroll_to_top_script = """
+        <script>
+            window.scrollTo({top: 0});
+        </script>
+        """
+        st.markdown(scroll_to_top_script, unsafe_allow_html=True)
 else:
     st.write("Download the CSV file to see the results and send to Yonatan")
     st.download_button(
