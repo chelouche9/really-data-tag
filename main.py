@@ -70,6 +70,12 @@ if num < len(df):
         </script>
         """
         st.markdown(scroll_to_top_script, unsafe_allow_html=True)
+    st.download_button(
+        label="Download Results",
+        data=df.to_csv(index=False),
+        file_name='results.csv',
+        mime='text/csv'
+    )
 else:
     st.write("Download the CSV file to see the results and send to Yonatan")
     st.download_button(
