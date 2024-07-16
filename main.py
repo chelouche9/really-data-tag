@@ -19,9 +19,16 @@ if 'qwen_score' not in st.session_state:
     st.session_state['qwen_score'] = 1
 if 'llama_score' not in st.session_state:
     st.session_state['llama_score'] = 1
+if 'comment' not in st.session_state:
+    st.session_state['comment'] = ""
 
 def update_score(score: int, model: str):
     st.session_state[f'{model}_score'] = score
+
+# Function to handle text input change
+def save_text_input():
+    st.session_state['text_input'] = st.session_state['input_text']
+
 
 # Function to increment the claim number
 def increment_claim():
@@ -29,11 +36,13 @@ def increment_claim():
     df.loc[num, 'mixtral_score'] = st.session_state['mixtral_score']
     df.loc[num, 'qwen_score'] = st.session_state['qwen_score']
     df.loc[num, 'llama_score'] = st.session_state['llama_score']
+    df.loc[num, 'comment'] = st.session_state['comment']
 
     st.session_state['gpt_score'] = 1
     st.session_state['mixtral_score'] = 1
     st.session_state['qwen_score'] = 1
     st.session_state['llama_score'] = 1
+    st.session_state['comment'] = ""
     df.to_csv('questions.csv', index=False)
 
     print(df.head())
@@ -57,6 +66,14 @@ if num < len(df):
         if rating:
             update_score(rating, answer['model'])
         st.divider()
+    
+    st.write("Comment")
+    text_input = st.text_input(
+        'Enter your comments:', 
+        key='comment', 
+        # on_change=save_text_input
+    )
+    st.divider()
     
     # Button to go to the next claim
     # st.button('Next', on_click=increment_claim)
